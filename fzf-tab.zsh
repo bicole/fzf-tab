@@ -479,6 +479,7 @@ _fzf_tab_complete() {
 }
 
 fzf-tab-complete() {
+    enable-fzf-tab
     # this name must be ugly to avoid clashes
     local -i _fzf_tab_continue=1 _fzf_tab_ignored=0
     while (( _fzf_tab_continue )); do
@@ -501,7 +502,11 @@ fzf-tab-complete() {
           zle redisplay
         fi
     done
+
+    zstyle ':completion:*' list-grouped true
+    disable-fzf-tab
 }
+
 
 zle -N fzf-tab-complete
 
@@ -623,7 +628,6 @@ build-fzf-tab-module() {
   fi
 }
 
-enable-fzf-tab
 zle -N toggle-fzf-tab
 
 # restore options
