@@ -536,7 +536,7 @@ enable-fzf-tab() {
     emulate -L zsh -o extended_glob
     (( ! $+_fzf_tab_orig_widget )) || disable-fzf-tab
 
-    typeset -g _fzf_tab_orig_widget="${${$(bindkey '^I')##* }:-expand-or-complete}"
+    typeset -g _fzf_tab_orig_widget=fzf-completion
     if (( ! $+widgets[.fzf-tab-orig-$_fzf_tab_orig_widget] )); then
         # Widgets that get replaced by compinit.
         local compinit_widgets=(
