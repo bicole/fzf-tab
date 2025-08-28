@@ -233,6 +233,7 @@ fzf-tab-debug() {
 fzf-tab-complete() {
   # this name must be ugly to avoid clashes
   local -i _ftb_continue=1 _ftb_continue_last=0 _ftb_accept=0 ret=0
+  enable-fzf-tab
   # hide the cursor until finishing completion, so that users won't see cursor up and down
   # NOTE: MacOS Terminal doesn't support civis & cnorm
   echoti civis >/dev/tty 2>/dev/null
@@ -258,6 +259,7 @@ fzf-tab-complete() {
   echoti cnorm >/dev/tty 2>/dev/null
   zle .redisplay
   (( _ftb_accept )) && zle .accept-line
+  disable-fzf-tab
   return $ret
 }
 
@@ -298,7 +300,7 @@ enable-fzf-tab() {
   emulate -L zsh -o extended_glob
   (( ! $+_ftb_orig_widget )) || disable-fzf-tab
 
-  typeset -g _ftb_orig_widget="${${$(builtin bindkey '^I')##* }:-expand-or-complete}"
+  typeset -g _fzf_orig_widget=fzf-completion
   if (( ! $+widgets[.fzf-tab-orig-$_ftb_orig_widget] )); then
     # Widgets that get replaced by compinit.
     local compinit_widgets=(
@@ -428,7 +430,6 @@ typeset -ga _ftb_group_colors=(
   fi
 }
 
-enable-fzf-tab
 zle -N toggle-fzf-tab
 
 # restore aliases
